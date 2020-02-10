@@ -17,6 +17,7 @@ public class ClockDisplay
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
+    private String timeOfDay;
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -26,6 +27,7 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        timeOfDay = " AM";
         updateDisplay();
     }
 
@@ -38,6 +40,11 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        if(hour < 12) {
+            timeOfDay = " AM";
+        } else {
+            timeOfDay = " PM";
+        }
         setTime(hour, minute);
     }
 
@@ -51,6 +58,11 @@ public class ClockDisplay
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
         }
+        if(hours.getValue() < 12) {
+            timeOfDay = " AM";
+        } else {
+            timeOfDay = " PM";
+        }
         updateDisplay();
     }
 
@@ -62,6 +74,11 @@ public class ClockDisplay
     {
         hours.setValue(hour);
         minutes.setValue(minute);
+        if(hour < 12) {
+            timeOfDay = " AM";
+        } else {
+            timeOfDay = " PM";
+        }
         updateDisplay();
     }
 
@@ -78,22 +95,16 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        if(hours.getValue() < 12) {
-            if(hours.getValue() != 0) {
-                displayString = hours.getDisplayValue() + ":" + 
-                                minutes.getDisplayValue() + " AM";
-            } else {
-                displayString = "12:" + 
-                                minutes.getDisplayValue() + " AM";
-                            }
+        if(hours.getValue() == 0) {
+            displayString = "12:" + minutes.getDisplayValue() + timeOfDay;
+        } else if(hours.getValue() < 12) {
+            displayString = hours.getDisplayValue() + ":" + 
+                        minutes.getDisplayValue() + timeOfDay;
+        } else if(hours.getValue() == 12) {
+            displayString = "12:" + minutes.getDisplayValue() + timeOfDay;
         } else {
-            if(hours.getValue() != 12) {
-                displayString = hours.getValue() % 12 + ":" + 
-                                minutes.getDisplayValue() + " PM";
-            } else {
-                displayString = "12:" + 
-                                minutes.getDisplayValue() + " PM";
-            }
+            displayString = hours.getValue() % 12 + ":" + 
+                        minutes.getDisplayValue() + timeOfDay;
         }
     }
 }
