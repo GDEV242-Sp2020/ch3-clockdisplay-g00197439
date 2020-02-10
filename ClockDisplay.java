@@ -78,7 +78,22 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        if(hours.getValue() < 12) {
+            if(hours.getValue() != 0) {
+                displayString = hours.getDisplayValue() + ":" + 
+                                minutes.getDisplayValue() + " AM";
+            } else {
+                displayString = "12:" + 
+                                minutes.getDisplayValue() + " AM";
+                            }
+        } else {
+            if(hours.getValue() != 12) {
+                displayString = hours.getValue() % 12 + ":" + 
+                                minutes.getDisplayValue() + " PM";
+            } else {
+                displayString = "12:" + 
+                                minutes.getDisplayValue() + " PM";
+            }
+        }
     }
 }
